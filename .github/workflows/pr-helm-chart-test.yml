@@ -57,5 +57,3 @@ jobs:
         working-directory: example/test-chart
         run: |
           helm template . | kubeconform -strict -summary -kubernetes-version '${{ github.event.inputs.kubeapi_version }}' -exit-on-error
-
-
