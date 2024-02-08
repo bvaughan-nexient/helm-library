@@ -20,6 +20,7 @@ jobs:
         run: |
           if [ -f .tool-repos ]; then
             for tool in $(cat .tool-repos); do
+              echo "asdf plugin add $(echo $tool | cut -d ' ' -f 1) $(echo $tool | cut -d ' ' -f 2)"
               asdf plugin add $(echo $tool | cut -d ' ' -f 1) $(echo $tool | cut -d ' ' -f 2)
             done
           fi  
