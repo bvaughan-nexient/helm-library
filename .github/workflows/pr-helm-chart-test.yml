@@ -19,7 +19,7 @@ jobs:
       - name: Install ASDF plugins
         run: |
           if [ -f .tool-repos ]; then
-            for tool in $(cat .tool-repos); do
+            cat .too-repos | while read tool || [[ -n $tool ]]; do
               echo "this line: $tool"
               echo "asdf plugin add $(echo $tool | cut -d ' ' -f 1) $(echo $tool | cut -d ' ' -f 2)"
               asdf plugin add $(echo $tool | cut -d ' ' -f 1) $(echo $tool | cut -d ' ' -f 2)
