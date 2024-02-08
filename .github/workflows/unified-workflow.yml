@@ -65,6 +65,7 @@ jobs:
           helm template . | kubeconform -strict -summary -kubernetes-version $KUBEAPI_VERSION -exit-on-error
   deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.workflow.steps.test.outcome == 'success'
+    needs: test
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
