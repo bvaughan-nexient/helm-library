@@ -74,7 +74,7 @@ jobs:
         uses: ./actions/.github/actions/helm_test
         with:
           value_file: ${{ matrix.values_file }}
-          test_path: ${{ github.env.GITHUB_WORKSPACE}}/example/test-chart
+          test_path: ./example/test-chart
           kube_api_version: "1.26.5"
 
   deploy:
