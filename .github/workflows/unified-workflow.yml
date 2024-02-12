@@ -51,7 +51,7 @@ jobs:
     needs: [enumerate_tests]
     strategy:
       matrix:
-        values_file: ${{ needs.enumerate_tests.outputs.valfiles }}
+        values_file: ${{ fromJson(needs.enumerate_tests.outputs.valfiles) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
