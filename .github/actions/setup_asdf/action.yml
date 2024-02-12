@@ -13,9 +13,11 @@ runs:
             asdf plugin add $(echo $tool | cut -d ' ' -f 1) $(echo $tool | cut -d ' ' -f 2)
           done
         fi  
+      shell: bash
 
     - name: Install ASDF tools
       run: |
         if [ -f .tool-versions ]; then
           asdf install
         fi
+      shell: bash
