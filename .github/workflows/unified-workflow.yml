@@ -72,7 +72,7 @@ jobs:
         with:
           value_file: ${{ matrix.values_file }}
           test_path: example/test-chart
-          kubeapi_version: "1.26.5"
+          kube_api_version: "1.26.5"
 
       # - name: Install ASDF
       #   uses: asdf-vm/actions/setup@v3

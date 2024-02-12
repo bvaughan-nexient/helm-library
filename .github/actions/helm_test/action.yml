@@ -39,6 +39,7 @@ runs:
         fi
         popd
       }  
+      pwd
       resolve-helm-chart-dependencies .
 
   - name: Lint Helm Chart
