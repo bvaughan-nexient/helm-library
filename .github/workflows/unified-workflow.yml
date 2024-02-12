@@ -41,7 +41,7 @@ jobs:
         id: find-values
         working-directory: example/test-chart
         run: |
-          valfiles=$(find . -type f -name "values*.yaml" -o -name "values*.yml" -print0)
+          valfiles=$(find . -type f -name "values*.yaml" -o -name "values*.yml" -printf "%p ")
           valfilesJson=$(jq --compact-output --null-input '$ARGS.positional' --args -- "${valfiles[@]}")
           echo $valfilesJson >> $GITHUB_OUTPUT
         shell: bash
