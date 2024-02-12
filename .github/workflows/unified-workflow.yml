@@ -42,7 +42,8 @@ jobs:
         working-directory: example/test-chart
         run: |
           valfiles=$(printf '['; find . -maxdepth 1 -type f -name "values*.yaml" -o -name "values*.yml" -printf '"%p",'| sed 's/,$//'; printf ']')
-          echo $valfiles >> $GITHUB_OUTPUT
+          echo "$valfiles"
+          echo "$valfiles" >> $GITHUB_OUTPUT
         shell: bash
 
   test:
