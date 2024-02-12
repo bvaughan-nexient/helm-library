@@ -61,5 +61,4 @@ runs:
     working-directory: ${{ inputs.test_path }}
     shell: bash
     run: |
-      cd ${{ github.event.inputs.test_path }}
       helm template . --values ${{ inputs.value_file }} | kubeconform -strict -summary -kubernetes-version ${{ inputs.kube_api_version }} -exit-on-error
