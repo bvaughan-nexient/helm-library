@@ -41,7 +41,7 @@ jobs:
         id: find-values
         working-directory: example/test-chart
         run: |
-          valfiles=$(printf '['; find . -maxdepth 1 -type f -name "values*.yaml" -o -name "values*.yml" -printf '"%p",'| sed 's/,$//'; printf ']')
+          valfiles=$(printf '['; find . -type f -regex "./values.*ya?ml" -printf '"%p",'| sed 's/,$//'; printf ']')
           echo "$valfiles"
           echo "$valfiles" >> $GITHUB_OUTPUT
         shell: bash
