@@ -18,7 +18,7 @@ jobs:
     ## Always run tests.
     runs-on: ubuntu-latest
     outputs:
-      valfiles: ${{ steps.find-values.outputs.valfilesJson }}
+      valfiles: ${{ steps.find-values.outputs.valfiles }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,9 +41,8 @@ jobs:
         id: find-values
         working-directory: example/test-chart
         run: |
-          valfiles=$(find . -type f -name "values*.yaml" -o -name "values*.yml" -printf "%p ")
-          valfilesJson=$(jq --compact-output --null-input '$ARGS.positional' --args -- "${valfiles[@]}")
-          echo $valfilesJson >> $GITHUB_OUTPUT
+          valfiles=$(printf '['; find . -type f -name "values*.yaml" -o -name "values*.yml" -printf '"%p",'| sed 's/,$//'; printf ']')
+          echo $valfiles >> $GITHUB_OUTPUT
         shell: bash
 
   test:
