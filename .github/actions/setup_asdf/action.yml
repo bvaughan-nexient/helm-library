@@ -14,7 +14,7 @@ runs:
             echo "Plugin: $PLUGIN"
             REPO=$(echo $tool | cut -d ' ' -f 2)
             echo "URL: $REPO"
-            asdf plugin add $PLUGIN "$REPO"
+            asdf plugin add $PLUGIN $REPO
           done
         fi  
       shell: bash
