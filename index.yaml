@@ -2,6 +2,15 @@ apiVersion: v1
 entries:
   helm-library:
   - apiVersion: v2
+    created: "2024-02-12T21:59:40.624680267Z"
+    description: A Helm library chart
+    digest: 13eb2360e9cd50bec095df251754d507ec809c0e55c39bfa374cec9707ba741a
+    name: helm-library
+    type: library
+    urls:
+    - https://github.com/bvaughan-nexient/helm-library/releases/download/helm-library-2.9.2/helm-library-2.9.2.tgz
+    version: 2.9.2
+  - apiVersion: v2
     created: "2024-02-08T17:57:25.858334693Z"
     description: A Helm library chart
     digest: 7c1613d32a23d4dcdc1b5bd96f72cfb0f9f8235f0c2edc1d8bb3c8dcf47dba23
@@ -28,4 +37,4 @@ entries:
     urls:
     - https://github.com/bvaughan-nexient/helm-library/releases/download/helm-library-2.8.5/helm-library-2.8.5.tgz
     version: 2.8.5
-generated: "2024-02-08T17:57:25.858425165Z"
+generated: "2024-02-12T21:59:40.624698401Z"
