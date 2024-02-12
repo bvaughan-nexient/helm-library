@@ -1,5 +1,5 @@
 name: install ASDF tools from repo
-descripion: installs ASDF tools from the repo
+description: installs ASDF tools from the repo
 runs:
   using: "composite"
   steps:
