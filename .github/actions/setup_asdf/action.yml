@@ -10,7 +10,11 @@ runs:
       run: |
         if [ -f .tool-repos ]; then
           cat .tool-repos | while read tool || [[ -n $tool ]]; do
-            asdf plugin add $(echo $tool | cut -d ' ' -f 1) $(echo $tool | cut -d ' ' -f 2)
+            PLUGIN=$(echo $tool | cut -d ' ' -f 1)
+            echo "Plugin: $PLUGIN"
+            REPO=$(echo $tool | cut -d ' ' -f 2)
+            echo "URL: $REPO"
+            asdf plugin add $PLUGIN "$REPO"
           done
         fi  
       shell: bash
