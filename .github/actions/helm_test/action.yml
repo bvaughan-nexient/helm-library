@@ -34,7 +34,7 @@ runs:
             tar xfz $chartzip -C charts &>/dev/null
             chartzipdir=$(ls -d charts/* | head -n 1)
             echo; echo; echo "Resolving dependencies for $chartzipdir"; echo; echo
-            resolve-helm-chart-dependencies charts/$chartzipdir
+            resolve-helm-chart-dependencies $chartzipdir
           done
         else 
           echo; echo; echo "${startdir}: No dependencies found."; echo; echo
