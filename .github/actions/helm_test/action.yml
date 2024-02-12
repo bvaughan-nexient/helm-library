@@ -1,0 +1,72 @@
+name: Run custom Helm chart tests
+description: Runs custom Helm chart tests
+inputs:
+  test_path:
+    description: 'The path to the test directory'
+    required: true
+  value_file:
+    description: 'The path to the values file'
+    required: true
+  kube_api_version:
+    description: 'The Kubernetes API version'
+    required: true
+    default: "1.26.5"
+runs:
+  using: "composite"
+  steps:
+  - name: Install Helm Chart dependencies
+    working-directory: ${{ inputs.test_path }}
+    shell: bash
+    run: |
+      resolve-helm-chart-dependencies () {
+        if [ -z $1 ]; then
+          echo "No chart directory provided"
+          startdir=$(pwd)
+        else
+          startdir=$1
+        fi
+        pushd $startdir
+        helm dep build .
+        if [ -d ./charts ]; then
+          for chartzip in `find charts -maxdepth 1 -name '*.tgz' -type f`; do
+            # chartzipdir=$(tar -tzf $chartzip | head -n 1 | cut -f 1 -d '/')
+            echo "untar $chartzip:"
+            tar xfz $chartzip -C charts &>/dev/null
+            chartzipdir=$(ls -d charts/* | head -n 1)
+            echo; echo; echo "Resolving dependencies for $chartzipdir"; echo; echo
+            resolve-helm-chart-dependencies $chartzipdir
+          done
+        else 
+          echo; echo; echo "${startdir}: No dependencies found."; echo; echo
+        fi
+        popd
+      }  
+      pwd
+      resolve-helm-chart-dependencies .
+
+  - name: Lint Helm Chart
+    working-directory: ${{ inputs.test_path }}
+    shell: bash
+    run: |
+      helm lint .  --values ${{ inputs.value_file }}
+    
+  - name: Build Helm Template
+    working-directory: ${{ inputs.test_path }}
+    shell: bash
+    run: |
+      mkdir -p output
+      helm template . --values ${{ inputs.value_file }} --output-dir ./output
+
+  - name: Validate Helm Chart
+    working-directory: ${{ inputs.test_path }}
+    shell: bash
+    run: |
+      helm template . --values ${{ inputs.value_file }} | kubeconform -strict -summary -kubernetes-version ${{ inputs.kube_api_version }} -exit-on-error
+
+  - name: Output charts
+    working-directory: ${{ inputs.test_path }}
+    shell: bash
+    run: |
+      for file in $(find ./output -type f -name "*.yaml"); do
+        echo $file; echo; echo; cat $file; echo; echo;
+      done

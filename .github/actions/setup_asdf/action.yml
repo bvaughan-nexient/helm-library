@@ -1,0 +1,27 @@
+name: install ASDF tools from repo
+description: installs ASDF tools from the repo
+runs:
+  using: "composite"
+  steps:
+    - name: Install ASDF
+      uses: asdf-vm/actions/setup@v3
+
+    - name: Install ASDF plugins
+      run: |
+        if [ -f .tool-repos ]; then
+          cat .tool-repos | while read tool || [[ -n $tool ]]; do
+            PLUGIN=$(echo $tool | cut -d ' ' -f 1)
+            echo "Plugin: $PLUGIN"
+            REPO=$(echo $tool | cut -d ' ' -f 2)
+            echo "URL: $REPO"
+            asdf plugin add $PLUGIN $REPO
+          done
+        fi  
+      shell: bash
+
+    - name: Install ASDF tools
+      run: |
+        if [ -f .tool-versions ]; then
+          asdf install
+        fi
+      shell: bash

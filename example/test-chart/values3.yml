@@ -9,8 +9,6 @@ fullnameOverride: ""
 configMap:
   name: ""
   data:
-    test: "test"
-    anotherTest: "anotherTest"
     aFile: |
       [config]
       inifile=1
@@ -26,8 +24,8 @@ serviceAccount:
 podAnnotations: {}
 podLabels: {}
 deployment:
-  kind: StatefulSet # Deployment, StatefulSet
-  # kind: Deployment # Deployment, StatefulSet
+  # kind: StatefulSet # Deployment, StatefulSet
+  kind: Deployment # Deployment, StatefulSet
   minReadySeconds: 0
   replicaCount: 1
   injectLinkerd: true
@@ -35,8 +33,8 @@ deployment:
   nodeSelector: {}
   tolerations: []
   affinity: {}
-  # podSecurityContext: {}
-    # fsGroup: 2000
+  podSecurityContext: 
+    fsGroup: 2000
   volumes: 
   - name: configmap-test
     configMap:
@@ -53,11 +51,11 @@ container:
   env: 
     TEST_ENV: "test"
     TEST_ENV2: "test2"
-  securityContext: #{}
+  securityContext:
     readOnlyRootFilesystem: true
     runAsNonRoot: true
     allowPrivilegeEscalation: false
-  resources: #{}
+  resources:
     limits:
       cpu: 100m
       memory: 128Mi
@@ -81,7 +79,7 @@ service:
       targetPort: http
 
 ingress:
-  enabled: false
+  enabled: true
   className: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
