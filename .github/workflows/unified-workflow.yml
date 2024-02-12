@@ -26,23 +26,26 @@ jobs:
           fetch-depth: 0
           ref: ${{github.event.pull_request.head.ref}}
           repository: ${{github.event.pull_request.head.repo.full_name}}
-          
-      - name: Install ASDF
-        uses: asdf-vm/actions/setup@v3
+      
+      - name: Install ASDF toolset
+        uses: ./install-asdf.yaml
 
-      - name: Install ASDF plugins
-        run: |
-          if [ -f .tool-repos ]; then
-            cat .tool-repos | while read tool || [[ -n $tool ]]; do
-              asdf plugin add $(echo $tool | cut -d ' ' -f 1) $(echo $tool | cut -d ' ' -f 2)
-            done
-          fi  
+      # - name: Install ASDF
+      #   uses: asdf-vm/actions/setup@v3
 
-      - name: Install ASDF tools
-        run: |
-          if [ -f .tool-versions ]; then
-            asdf install
-          fi
+      # - name: Install ASDF plugins
+      #   run: |
+      #     if [ -f .tool-repos ]; then
+      #       cat .tool-repos | while read tool || [[ -n $tool ]]; do
+      #         asdf plugin add $(echo $tool | cut -d ' ' -f 1) $(echo $tool | cut -d ' ' -f 2)
+      #       done
+      #     fi  
+
+      # - name: Install ASDF tools
+      #   run: |
+      #     if [ -f .tool-versions ]; then
+      #       asdf install
+      #     fi
 
       - name: Find Values Files
         id: find-values
