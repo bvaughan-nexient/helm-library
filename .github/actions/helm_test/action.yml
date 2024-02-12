@@ -29,8 +29,10 @@ runs:
         helm dep build .
         if [ -d ./charts ]; then
           for chartzip in `find charts -maxdepth 1 -name '*.tgz' -type f`; do
-            chartzipdir=$(tar -tzf $chartzip | head -n 1 | cut -f 1 -d '/')
+            # chartzipdir=$(tar -tzf $chartzip | head -n 1 | cut -f 1 -d '/')
+            echo "untar $chartzip:"
             tar xfz $chartzip -C charts &>/dev/null
+            chartzipdir=$(ls -d charts/* | head -n 1)
             echo; echo; echo "Resolving dependencies for $chartzipdir"; echo; echo
             resolve-helm-chart-dependencies charts/$chartzipdir
           done
