@@ -15,7 +15,7 @@ runs:
   using: "composite"
   steps:
   - name: Install Helm Chart dependencies
-    working-directory: ${{ github.event.inputs.test_path }}
+    # working-directory: ${{ github.event.inputs.test_path }}
     shell: bash
     run: |
       resolve-helm-chart-dependencies () {
@@ -39,24 +39,28 @@ runs:
         fi
         popd
       }  
+      cd ${{ github.event.inputs.test_path }}
       pwd
       resolve-helm-chart-dependencies .
 
   - name: Lint Helm Chart
-    working-directory: ${{ github.event.inputs.test_path }}
+    # working-directory: ${{ github.event.inputs.test_path }}
     shell: bash
     run: |
+      cd ${{ github.event.inputs.test_path }}
       helm lint .  --values ${{ github.event.inputs.value_file }}
     
   - name: Build Helm Template
-    working-directory: ${{ github.event.inputs.test_path }}
+    # working-directory: ${{ github.event.inputs.test_path }}
     shell: bash
     run: |
+      cd ${{ github.event.inputs.test_path }}
       mkdir -p output
       helm template . --values ${{ github.event.inputs.value_file }} --output-dir ./output
 
   - name: Validate Helm Chart
-    working-directory: ${{ github.event.inputs.test_path }}
+    # working-directory: ${{ github.event.inputs.test_path }}
     shell: bash
     run: |
+      cd ${{ github.event.inputs.test_path }}
       helm template . --values ${{ github.event.inputs.value_file }} | kubeconform -strict -summary -kubernetes-version ${{ github.event.inputs.kube_api_version }} -exit-on-error

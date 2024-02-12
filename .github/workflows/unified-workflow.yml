@@ -53,7 +53,7 @@ jobs:
       matrix:
         values_file: ${{ fromJson(needs.enumerate_tests.outputs.valfiles) }}
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
