@@ -27,12 +27,26 @@ jobs:
           ref: ${{github.event.pull_request.head.ref}}
           repository: ${{github.event.pull_request.head.repo.full_name}}
 
+      - name: Install ASDF plugins
+        run: |
+          if [ -f .tool-repos ]; then
+            cat .tool-repos | while read tool || [[ -n $tool ]]; do
+              asdf plugin add $(echo $tool | cut -d ' ' -f 1) $(echo $tool | cut -d ' ' -f 2)
+            done
+          fi  
+
+      - name: Install ASDF tools
+        run: |
+          if [ -f .tool-versions ]; then
+            asdf install
+          fi
+
       - name: Find Values Files
         id: find-values
         working-directory: example/test-chart
         run: |
           valfiles=$(find . -type f -name "values*.yaml" -o -name "values*.yml")
-          valfilesJson=$(jq --compact-output --null-input '$ARGS.positional' --args -- "${valfiles[@]}")          )
+          valfilesJson=$(jq --compact-output --null-input '$ARGS.positional' --args -- "${valfiles[@]}")
           echo $valfilesJson >> $GITHUB_OUTPUT
         shell: bash
 
