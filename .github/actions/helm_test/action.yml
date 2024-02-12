@@ -30,7 +30,7 @@ runs:
         if [ -d ./charts ]; then
           for chartzip in `find charts -maxdepth 1 -name '*.tgz' -type f`; do
             chartzipdir=$(tar -tzf $chartzip | head -n 1 | cut -f 1 -d '/')
-            tar xfvz $chartzip -C charts
+            tar xfz $chartzip -C charts &>/dev/null
             echo; echo; echo "Resolving dependencies for $chartzipdir"; echo; echo
             resolve-helm-chart-dependencies charts/$chartzipdir
           done
