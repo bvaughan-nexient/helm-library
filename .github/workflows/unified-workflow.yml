@@ -43,7 +43,7 @@ jobs:
         run: |
           valfiles=$(printf '['; find . -type f -regex "./values.*ya?ml" -printf '"%p",'| sed 's/,$//'; printf ']')
           echo "$valfiles"
-          echo "$valfiles" >> $GITHUB_OUTPUT
+          echo "valfiles=$valfiles" >> $GITHUB_OUTPUT
         shell: bash
 
   test:
