@@ -1,0 +1,34 @@
+{{- define "helm-library.persistent-volume-claim.tpl" -}}
+{{- $requiredMsg := include "helm-library.default-check-required-msg" . -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ required (printf $requiredMsg "name") .Values.name | quote }}
+  labels:
+    {{- include "helm-library.labels" . | nindent 4 }}
+  {{- with .Values.pvc.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  storageClassName: {{ required (printf $requiredMsg "storageClassName") .Values.pvc.storageClassName | quote }}
+  volumeName: {{ required (printf $requiredMsg "volumeName") .Values.pvc.volumeName | quote }}
+  accessModes:
+  {{- if (ne .Values.pvc.accessModes nil) }}
+    {{- toYaml .Values.pvc.accessModes | nindent 4 }}
+  {{- else }}
+    - ReadWriteOnce
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ required (printf $requiredMsg "storageRequest") .Values.pvc.storageRequest | quote }}
+  selector:
+    matchLabels:
+      {{- include "helm-library.labels" . | nindent 6 }}
+  {{- with .Values.pvc.additionalSpec }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+{{- end }}
+{{- define "helm-library.persistent-volume-claim" -}}
+{{- include "helm-library.util.merge" (append . "helm-library.persistent-volume-claim.tpl") -}}
+{{- end -}}
