@@ -1,0 +1,7 @@
+{{- if (ne .Values.pvc nil) }}
+{{- include "helm-library.persistent-volume-claim" (list . "chart.persistent-volume-claim") -}}
+{{- end }}
+{{- define "chart.persistent-volume-claim" }}
+## custom persistent-volume-claim stuff here
+{{- end }}
+
