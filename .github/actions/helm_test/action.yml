@@ -61,7 +61,7 @@ runs:
     working-directory: ${{ inputs.test_path }}
     shell: bash
     run: |
-      helm template . --values ${{ inputs.value_file }} | kubeconform -strict -summary -kubernetes-version ${{ inputs.kube_api_version }} -exit-on-error
+      kubeconform -strict -summary -kubernetes-version ${{ inputs.kube_api_version }} -exit-on-error ./output
 
   - name: Output charts
     working-directory: ${{ inputs.test_path }}

@@ -39,9 +39,9 @@ jobs:
 
       - name: Find Values Files
         id: find-values
-        working-directory: example/test-chart
+        working-directory: tests/test-chart
         run: |
-          valfiles=$(printf '['; find . -type f -regex "./values.*ya?ml" -printf '"%p",'| sed 's/,$//'; printf ']')
+          valfiles=$(printf '['; find . -type f -regextype egrep -iregex "./values.*ya?ml" -printf '"%p",'| sed 's/,$//'; printf ']')
           echo "$valfiles"
           echo "valfiles=$valfiles" >> $GITHUB_OUTPUT
         shell: bash
@@ -74,7 +74,7 @@ jobs:
         uses: ./actions/.github/actions/helm_test
         with:
           value_file: ${{ matrix.values_file }}
-          test_path: ./example/test-chart
+          test_path: ./tests/test-chart
           kube_api_version: "1.26.5"
 
   deploy:
