@@ -36,7 +36,8 @@ runs:
               tar xfz $chartzip -C charts &>/dev/null
               # chartzipdir=$(ls -d charts/* | head -n 1)
               echo "determine chart directory:"
-              chartzipdir=$(tar -tzf $chartzip | head -n 1 | cut -f 1 -d "/")
+              charttarlist=$(tar -tzf $chartzip)
+              chartzipdir=$(echo $charttarlist | head -n 1 | cut -f 1 -d "/")
               echo; echo; echo "Resolving dependencies for $chartzipdir"; echo; echo; echo
               resolve-helm-chart-dependencies $chartzipdir
             done
