@@ -28,7 +28,6 @@ runs:
         pushd $startdir
         if [ -f ./Chart.yaml ]; then
           found_deps=$(yq ".dependencies" ./Chart.yaml)
-          echo "$found_deps"
           case "$found_deps" in
             ""|"null"|null|NULL|Null)
               echo "No dependencies found in $startdir/Chart.yaml"
