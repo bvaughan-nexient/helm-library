@@ -29,21 +29,24 @@ runs:
         if [ -f ./Chart.yaml ]; then
           found_deps=$(yq ".dependencies" ./Chart.yaml)
           echo "$found_deps"
-          if [[ "$found_deps" != 'null' ]]; then
-            echo "Resolving dependencies for $startdir"
-            helm dep build .
-            for chartzip in `find charts -maxdepth 1 -name '*.tgz' -type f`; do
-              echo "untar $chartzip:"
-              tar xfz $chartzip -C charts &>/dev/null
-              echo "determine chart directory:"
-              charttarlist=$(tar -tzf $chartzip)
-              chartzipdir=$(echo $charttarlist | head -n 1 | cut -f 1 -d "/")
-              echo; echo; echo "Resolving dependencies for $chartzipdir"; echo; echo; echo
-              resolve-helm-chart-dependencies charts/$chartzipdir
-            done
-          else
-            echo "No dependencies found in $startdir/Chart.yaml"
-          fi
+          case "$found_deps" in
+            ""|"null"|null|NULL|Null)
+              echo "No dependencies found in $startdir/Chart.yaml"
+              ;;
+            *)
+              echo "Resolving dependencies for $startdir"
+              helm dep build .
+              for chartzip in `find charts -maxdepth 1 -name '*.tgz' -type f`; do
+                echo "untar $chartzip:"
+                tar xfz $chartzip -C charts &>/dev/null
+                echo "determine chart directory:"
+                charttarlist=$(tar -tzf $chartzip)
+                chartzipdir=$(echo $charttarlist | head -n 1 | cut -f 1 -d "/")
+                echo; echo; echo "Resolving dependencies for $chartzipdir"; echo; echo; echo
+                resolve-helm-chart-dependencies charts/$chartzipdir
+              done
+              ;;
+          esac
         else
           echo "No Chart.yaml found in $startdir"
         fi
