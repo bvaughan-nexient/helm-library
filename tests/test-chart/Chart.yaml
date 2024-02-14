@@ -7,4 +7,4 @@ appVersion: "0.0.1"
 dependencies:
   - name: helm-library
     version: ^2.0.0
-    repository: file://../../helm-library
+    repository: file://../../charts/helm-library
