@@ -43,7 +43,7 @@ runs:
       }  
       if [ -f Chart.yaml ]; then
         found_deps=$(yq ".dependencies" Chart.yaml)
-        if [[ "$found_deps" != "null" -o "$found_deps" != "" ]]; then
+        if [[ "$found_deps" != "null" || "$found_deps" != "" ]]; then
           echo "Resolving dependencies for ${{ inputs.test_path }}"
           resolve-helm-chart-dependencies .
         else
