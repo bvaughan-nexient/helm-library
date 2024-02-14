@@ -34,12 +34,11 @@ runs:
             for chartzip in `find charts -maxdepth 1 -name '*.tgz' -type f`; do
               echo "untar $chartzip:"
               tar xfz $chartzip -C charts &>/dev/null
-              # chartzipdir=$(ls -d charts/* | head -n 1)
               echo "determine chart directory:"
               charttarlist=$(tar -tzf $chartzip)
               chartzipdir=$(echo $charttarlist | head -n 1 | cut -f 1 -d "/")
               echo; echo; echo "Resolving dependencies for $chartzipdir"; echo; echo; echo
-              resolve-helm-chart-dependencies $chartzipdir
+              resolve-helm-chart-dependencies charts/$chartzipdir
             done
           else
             echo "No dependencies found in $startdir/Chart.yaml"
