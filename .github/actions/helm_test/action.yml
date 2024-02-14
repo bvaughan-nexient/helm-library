@@ -29,7 +29,7 @@ runs:
         if [ -f ./Chart.yaml ]; then
           found_deps=$(yq ".dependencies" ./Chart.yaml)
           echo "$found_deps"
-          if [[ -z "$found_deps" ]]; then
+          if [[ ! -z "$found_deps" ]]; then
             echo "Resolving dependencies for $startdir"
             helm dep build .
             for chartzip in `find charts -maxdepth 1 -name '*.tgz' -type f`; do
