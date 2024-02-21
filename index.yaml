@@ -55,4 +55,13 @@ entries:
     urls:
     - https://github.com/bvaughan-nexient/helm-library/releases/download/helm-library-2.8.5/helm-library-2.8.5.tgz
     version: 2.8.5
-generated: "2024-02-14T21:52:58.290778769Z"
+  - apiVersion: v2
+    created: "2024-02-21T20:59:37.405150144Z"
+    description: A Helm library chart
+    digest: 52a5d2abec7a6beb906fac3581919d81da64fc085c71bb14dcb097df138cff67
+    name: helm-library
+    type: library
+    urls:
+    - https://github.com/bvaughan-nexient/helm-library/releases/download/helm-library-0.0.1/helm-library-0.0.1.tgz
+    version: 0.0.1
+generated: "2024-02-21T20:59:37.405171444Z"
