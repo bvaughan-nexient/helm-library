@@ -72,7 +72,9 @@ jobs:
       
       - name: Set magic chart version
         uses: ./actions/.github/actions/helm_test_magic_version
-        
+        with:
+          test_path: ./tests/test-chart
+          
       - name: Run test jobs
         uses: ./actions/.github/actions/helm_test
         with:

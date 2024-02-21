@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
-
 set -e
+
+if [ -z ${TEST_PATH} ]; then
+  echo "TEST_PATH is not set"
+  exit 1
+fi
 
 TAG_SEPARATOR="-"
 
@@ -30,7 +34,7 @@ chart_version_from_tag() {
 }
 
 lookup_dependency_path() {
-  local chart_file="./Chart.yaml"
+  local chart_file="${TEST_PATH}/Chart.yaml"
   local repo_name=$(lookup_repo_name)
   local dependency_path=$(yq '.dependencies[] | select(.name == "'${repo_name}'") | .repository' ${chart_file} | sed 's/file:\/\/\(.*\)/\1/')
   echo "${dependency_path}"
