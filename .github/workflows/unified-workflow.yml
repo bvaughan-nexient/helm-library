@@ -94,6 +94,10 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
+      #### TODO: Add logic to determine semver version
+      #### TODO: Add step to update chart version in Chart.yaml
+
+
       - name: Install Helm
         uses: azure/setup-helm@v3
 
