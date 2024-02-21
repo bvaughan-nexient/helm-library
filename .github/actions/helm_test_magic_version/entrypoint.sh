@@ -63,7 +63,7 @@ set_target_chart_version() {
   local chart_version_value=$(yq '.version' ${chart_file})
   echo "chart_version_value: ${chart_version_value}"
   if [[ "${chart_version_value}" == "CHART_VERSION" ]]; then
-    sed -i 's/version: .*/version:' "${prerelease_tag}"'/' ${chart_file}
+    sed -i -E "s/version: .*/version: ${prerelease_tag}/" ${chart_file}
   fi
   cat ${chart_file}
 }

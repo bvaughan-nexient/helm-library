@@ -1,8 +1,8 @@
 name: Helm Chart Test and Release
 on:
   pull_request:
-    branches:
-      - main
+    types: [ opened, reopened, synchronize, ready_for_review ]
+    branches: [ main ]
   push:
     branches:
       - main
@@ -12,6 +12,10 @@ on:
         description: "Kubernetes API version"
         required: true
         default: "1.26.5"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   enumerate_tests:
@@ -74,7 +78,7 @@ jobs:
         uses: ./actions/.github/actions/helm_test_magic_version
         with:
           test_path: ./tests/test-chart
-          
+
       - name: Run test jobs
         uses: ./actions/.github/actions/helm_test
         with:
