@@ -135,12 +135,12 @@ jobs:
           chart_path: charts/helm-library/Chart.yaml
           version: ${{ steps.find_version.outputs.major }}.${{ steps.find_version.outputs.minor }}.${{ steps.find_version.outputs.patch }}
 
-      - name: Commit tagger release
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: tvdias/github-tagger@v0.0.2
-        with:
-          tag: ${{ steps.find_version.outputs.version_tag }}
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Commit tagger release
+      #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      #   uses: tvdias/github-tagger@v0.0.2
+      #   with:
+      #     tag: ${{ steps.find_version.outputs.version_tag }}
+      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create release
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
