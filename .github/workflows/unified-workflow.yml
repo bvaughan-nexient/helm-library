@@ -92,23 +92,60 @@ jobs:
     environment:
       name: artifact-deploy
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.find_version.outputs.version_tag }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Install ASDF toolset
+        uses: ./actions/.github/actions/setup_asdf
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        
       - name: Configure Git
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      #### TODO: Add logic to determine semver version
-      #### TODO: Add step to update chart version in Chart.yaml
+      - name: determine version
+        id: find_version
+        uses: PaulHatch/semantic-version@v5.4.0
+        with:
+          enable_prerelease_mode: true
 
+      - name: Inject Chart Version
+        uses: ./actions/.github/actions/helm_inject_version
+        with:
+          chart_path: charts/helm-library/Chart.yaml
+          version: ${{ steps.find_version.outputs.version }}
 
-      - name: Install Helm
-        uses: azure/setup-helm@v3
+      - name: Commit tagger release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: tvdias/github-tagger@v0.0.2
+        with:
+          tag: ${{ steps.find_version.outputs.version }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.find_version.outputs.version }}
+          release_name: Release ${{ steps.find_version.outputs.version }}
+          body: |
+            Release ${{ steps.find_version.outputs.version }}
+          draft: false
+          prerelease: false
+
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
