@@ -142,18 +142,18 @@ jobs:
       #     tag: ${{ steps.find_version.outputs.version_tag }}
       #     repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create release
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.find_version.outputs.version_tag }}
-          release_name: Release ${{ steps.find_version.outputs.version }}
-          body: |
-            Release ${{ steps.find_version.outputs.version }}
-          draft: false
-          prerelease: false
+      # - name: Create release
+      #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ steps.find_version.outputs.version_tag }}
+      #     release_name: Release ${{ steps.find_version.outputs.version }}
+      #     body: |
+      #       Release ${{ steps.find_version.outputs.version }}
+      #     draft: false
+      #     prerelease: false
 
 
       - name: Run chart-releaser
