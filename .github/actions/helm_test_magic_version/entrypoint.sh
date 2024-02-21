@@ -8,13 +8,6 @@ fi
 
 TAG_SEPARATOR="-"
 
-random_string() {
-  local length=${1:-8}
-  # Yes, I know this is not a good random number generator. It's good enough for our purposes.
-  echo $(echo $(date +%s%N) | sha256sum | base64 | head -c ${length} ; echo)
-}
-THIS_RANDOM_STRING=$(random_string)
-
 lookup_repo_name() {
   basename `git rev-parse --show-toplevel`
 }
@@ -55,13 +48,9 @@ bump_semver_patch() {
 set_target_chart_version() {
   local dependency_path=$(lookup_local_dependency_path)
   local chart_file="${dependency_path}/Chart.yaml"
-  echo "chart_file: ${chart_file}"
   local current_tag=$(lookup_latest_tag)
   local prerelease_tag="$(bump_semver_patch $(chart_version_from_tag ${current_tag}))-rc.test"
-  echo "prerelease_tag: ${prerelease_tag}"
-  cp ${chart_file} ${chart_file}.${THIS_RANDOM_STRING}.orig
   local chart_version_value=$(yq '.version' ${chart_file})
-  echo "chart_version_value: ${chart_version_value}"
   if [[ "${chart_version_value}" == "CHART_VERSION" ]]; then
     sed -i -E "s/version: .*/version: ${prerelease_tag}/" ${chart_file}
   fi
