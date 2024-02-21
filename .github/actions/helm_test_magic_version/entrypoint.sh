@@ -58,11 +58,12 @@ set_target_chart_version() {
   echo "chart_file: ${chart_file}"
   local current_tag=$(lookup_latest_tag)
   local prerelease_tag="$(bump_semver_patch $(chart_version_from_tag ${current_tag}))-rc.test"
+  echo "prerelease_tag: ${prerelease_tag}"
   cp ${chart_file} ${chart_file}.${THIS_RANDOM_STRING}.orig
   local chart_version_value=$(yq '.version' ${chart_file})
   echo "chart_version_value: ${chart_version_value}"
   if [[ "${chart_version_value}" == "CHART_VERSION" ]]; then
-    sed -i 's/version: .*/version: ${prerelease_tag}/' ${chart_file}
+    sed -i '' "s/version: .*/version: ${prerelease_tag}/" ${chart_file}
   fi
   cat ${chart_file}
 }
