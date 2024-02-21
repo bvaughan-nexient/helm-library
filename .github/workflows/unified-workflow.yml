@@ -94,8 +94,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    outputs:
-      version: ${{ steps.find_version.outputs.version_tag }}
+    # outputs:
+    #   version: ${{ steps.find_version.outputs.version }}
+    #   version_tag: ${{ steps.find_version.outputs.version_tag }}
 
     steps:
       - name: Checkout code
@@ -126,18 +127,19 @@ jobs:
         uses: PaulHatch/semantic-version@v5.4.0
         with:
           enable_prerelease_mode: true
+          tag_prefix: "helm-library-"
 
       - name: Inject Chart Version
         uses: ./actions/.github/actions/helm_inject_chart_version
         with:
           chart_path: charts/helm-library/Chart.yaml
-          version: ${{ steps.find_version.outputs.version }}
+          version: ${{ steps.find_version.outputs.major }}.${{ steps.find_version.outputs.minor }}.${{ steps.find_version.outputs.patch }}
 
       - name: Commit tagger release
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: tvdias/github-tagger@v0.0.2
         with:
-          tag: ${{ steps.find_version.outputs.version }}
+          tag: ${{ steps.find_version.outputs.version_tag }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create release
@@ -146,7 +148,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.find_version.outputs.version }}
+          tag_name: ${{ steps.find_version.outputs.version_tag }}
           release_name: Release ${{ steps.find_version.outputs.version }}
           body: |
             Release ${{ steps.find_version.outputs.version }}
