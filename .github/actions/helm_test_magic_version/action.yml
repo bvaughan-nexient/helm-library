@@ -1,0 +1,9 @@
+name: Set chart version to current tag
+description: Set chart version to current tag
+runs:
+  using: "composite"
+  steps:
+    - name: set chart version
+      shell: bash
+      run: |
+        bash $GITHUB_ACTION_PATH/entrypoint.sh

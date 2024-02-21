@@ -69,6 +69,9 @@ jobs:
 
       - name: Install ASDF toolset
         uses: ./actions/.github/actions/setup_asdf
+      
+      - name: Set magic chart version
+        uses: ./actions/.github/actions/helm_test_magic_version
         
       - name: Run test jobs
         uses: ./actions/.github/actions/helm_test
