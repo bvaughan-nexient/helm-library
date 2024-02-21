@@ -19,6 +19,10 @@ lookup_repo_name() {
   basename `git rev-parse --show-toplevel`
 }
 
+get_repo_basedir() {
+  git rev-parse --show-toplevel
+}
+
 lookup_latest_tag() {
   git fetch --tags >/dev/null 2>&1
 
@@ -33,11 +37,11 @@ chart_version_from_tag() {
   echo ${tag} | sed "s/^${repo_name}${TAG_SEPARATOR}//"
 }
 
-lookup_dependency_path() {
+lookup_local_dependency_path() {
   local chart_file="${TEST_PATH}/Chart.yaml"
   local repo_name=$(lookup_repo_name)
-  local dependency_path=$(yq '.dependencies[] | select(.name == "'${repo_name}'") | .repository' ${chart_file} | sed 's/file:\/\/\(.*\)/\1/')
-  echo "${dependency_path}"
+  local dependency_path=$(yq '.dependencies[] | select(.name == "'${repo_name}'") | .repository' ${chart_file} | sed -E 's/file:\/\/(\.\.?(\/))*//g')
+  echo "$(get_repo_basedir)/${dependency_path}"
 }
 
 bump_semver_patch() {
@@ -49,7 +53,7 @@ bump_semver_patch() {
 }
 
 set_target_chart_version() {
-  local dependency_path=$(lookup_dependency_path)
+  local dependency_path=$(lookup_local_dependency_path)
   local chart_file="${dependency_path}/Chart.yaml"
   local current_tag=$(lookup_latest_tag)
   local prerelease_tag="$(bump_semver_patch $(chart_version_from_tag ${current_tag}))-rc.test"
