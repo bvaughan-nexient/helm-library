@@ -1,0 +1,19 @@
+name: Set chart version to current tag
+description: Set chart version to current tag
+inputs:
+  version:
+    description: 'The version to set the chart to'
+    required: true
+  chart_path:
+    description: 'The path to the chart directory relative to the repository root'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: set chart version
+      shell: bash
+      run: |
+        bash $GITHUB_ACTION_PATH/entrypoint.sh  
+      env:
+        VERSION: ${{ inputs.version }}
+        CHART_PATH: ${{ inputs.chart_path }}
