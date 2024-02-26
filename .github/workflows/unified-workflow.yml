@@ -119,19 +119,20 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Import GPG key
-        env:
-          SIGNING_KEY_BASE64: ${{ secrets.GPG_PRIVATE_KEY }}
-          SIGNING_KEY_PASSPHRASE_BASE64: ${{ secrets.GPG_PASSPHRASE }}
-          KEY_PATH: ".gpg-dir"
-          SIGNING_KEY_PATH: ".gpg-dir/secring.gpg"
-          SIGNING_KEY_PASSPHRASE_PATH: ".gpg-dir/passphrase"
-        run: |
-          mkdir "$KEY_PATH"
-          base64 -d <<< "$SIGNING_KEY_BASE64" > "$SIGNING_KEY_PATH"
-          base64 -d <<< "$SIGNING_KEY_PASSPHRASE_BASE64" > "$SIGNING_KEY_PASSPHRASE_PATH"
-          echo "CR_PASSPHRASE_FILE=$SIGNING_KEY_PASSPHRASE_PATH" >> "$GITHUB_ENV"
-          echo "CR_KEYRING=$SIGNING_KEY_PATH" >> "$GITHUB_ENV"
+      # - name: Import GPG key
+      #   env:
+      #     SIGNING_KEY_BASE64: ${{ secrets.GPG_PRIVATE_KEY }}
+      #     SIGNING_KEY_PASSPHRASE_BASE64: ${{ secrets.GPG_PASSPHRASE }}
+      #     KEY_PATH: ".gpg-dir"
+      #     SIGNING_KEY_PATH: ".gnupg/secring.gpg"
+      #     SIGNING_KEY_PASSPHRASE_PATH: ".gnupg/passphrase"
+      #     PUBLIC_KEY_PATH: ".gnupg/pubring.gpg"
+      #   run: |
+      #     mkdir "$KEY_PATH"
+      #     base64 -d <<< "$SIGNING_KEY_BASE64" > "$SIGNING_KEY_PATH"
+      #     base64 -d <<< "$SIGNING_KEY_PASSPHRASE_BASE64" > "$SIGNING_KEY_PASSPHRASE_PATH"
+      #     echo "CR_PASSPHRASE_FILE=$SIGNING_KEY_PASSPHRASE_PATH" >> "$GITHUB_ENV"
+      #     echo "CR_KEYRING=$SIGNING_KEY_PATH" >> "$GITHUB_ENV"
 
       - name: determine version
         id: find_version
@@ -152,8 +153,4 @@ jobs:
           charts_dir: ./charts
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          CR_SIGN: true
-
-      - name: cleanup
-        run: |
-          rm -f keyring.gpg passphrase-file.txt
+          # CR_SIGN: true
