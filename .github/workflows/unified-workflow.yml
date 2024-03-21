@@ -39,7 +39,7 @@ jobs:
           path: actions
 
       - name: Install ASDF toolset
-        uses: ./actions/.github/actions/setup_asdf
+        uses: launchbynttdata/actions-asdf-install_tools@v0
 
       - name: Find Values Files
         id: find-values
@@ -72,7 +72,7 @@ jobs:
           path: actions
 
       - name: Install ASDF toolset
-        uses: ./actions/.github/actions/setup_asdf
+        uses: launchbynttdata/actions-asdf-install_tools@v0
       
       - name: Set magic chart version
         uses: ./actions/.github/actions/helm_test_magic_version
