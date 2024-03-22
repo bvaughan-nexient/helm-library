@@ -142,7 +142,7 @@ jobs:
           tag_prefix: "helm-library-"
 
       - name: Inject Chart Version
-        uses: ./actions/.github/actions/helm_inject_chart_version
+        uses: launchbynttdata/actions-helm-inject_chart_version@v0
         with:
           chart_path: charts/helm-library/Chart.yaml
           version: ${{ steps.find_version.outputs.major }}.${{ steps.find_version.outputs.minor }}.${{ steps.find_version.outputs.patch }}
