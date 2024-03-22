@@ -109,7 +109,7 @@ jobs:
           path: actions
   
       - name: Install ASDF toolset
-        uses: ./actions/.github/actions/setup_asdf
+        uses: launchbynttdata/actions-asdf-install_tools@v0
 
       - name: Install Helm
         uses: azure/setup-helm@v3
