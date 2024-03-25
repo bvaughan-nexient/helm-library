@@ -77,7 +77,8 @@ jobs:
       - name: Set magic chart version
         uses: launchbynttdata/actions-helm-inject_chart_version@v0
         with:
-          test_path: ./tests/test-chart
+          chart_path: charts/helm-library/Chart.yaml
+          version: 0.1.0
 
       - name: Run test jobs
         uses: launchbynttdata/actions-helm-test@1b603628afb21ec4ebdc1d89c62bea8ad3babaf3
