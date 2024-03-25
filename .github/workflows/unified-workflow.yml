@@ -118,4 +118,3 @@ jobs:
           charts_dir: ./charts
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          # CR_SIGN: true
