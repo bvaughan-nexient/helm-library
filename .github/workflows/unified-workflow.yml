@@ -84,7 +84,7 @@ jobs:
         uses: launchbynttdata/actions-helm-test@1b603628afb21ec4ebdc1d89c62bea8ad3babaf3
         with:
           value_file: ${{ matrix.values_file }}
-          test_path: ./tests/test-chart
+          test_path: tests/test-chart
           kube_api_version: "1.26.5"
 
   deploy:
