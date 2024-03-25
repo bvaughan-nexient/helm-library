@@ -31,13 +31,6 @@ jobs:
           ref: ${{github.event.pull_request.head.ref}}
           repository: ${{github.event.pull_request.head.repo.full_name}}
 
-      # - name: Checkout actions
-      #   uses: actions/checkout@v4
-      #   with:
-      #     sparse-checkout: |
-      #       .github/actions
-      #     path: actions
-
       - name: Install ASDF toolset
         uses: launchbynttdata/actions-asdf-install_tools@v0
 
@@ -64,13 +57,6 @@ jobs:
           ref: ${{github.event.pull_request.head.ref}}
           repository: ${{github.event.pull_request.head.repo.full_name}}
 
-      # - name: Checkout actions
-      #   uses: actions/checkout@v4
-      #   with:
-      #     sparse-checkout: |
-      #       .github/actions
-      #     path: actions
-
       - name: Install ASDF toolset
         uses: launchbynttdata/actions-asdf-install_tools@v0
       
@@ -83,7 +69,7 @@ jobs:
       - name: Run test jobs
         uses: launchbynttdata/actions-helm-test@1b603628afb21ec4ebdc1d89c62bea8ad3babaf3
         with:
-          value_file: tests/test-chart/${{ matrix.values_file }}
+          value_file: ${{ matrix.values_file }}
           test_path: tests/test-chart
           kube_api_version: "1.26.5"
 
@@ -101,13 +87,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      # - name: Checkout actions
-      #   uses: actions/checkout@v4
-      #   with:
-      #     sparse-checkout: |
-      #       .github/actions
-      #     path: actions
   
       - name: Install ASDF toolset
         uses: launchbynttdata/actions-asdf-install_tools@v0
