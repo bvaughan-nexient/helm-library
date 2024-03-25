@@ -31,12 +31,12 @@ jobs:
           ref: ${{github.event.pull_request.head.ref}}
           repository: ${{github.event.pull_request.head.repo.full_name}}
 
-      - name: Checkout actions
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            .github/actions
-          path: actions
+      # - name: Checkout actions
+      #   uses: actions/checkout@v4
+      #   with:
+      #     sparse-checkout: |
+      #       .github/actions
+      #     path: actions
 
       - name: Install ASDF toolset
         uses: launchbynttdata/actions-asdf-install_tools@v0
@@ -64,23 +64,23 @@ jobs:
           ref: ${{github.event.pull_request.head.ref}}
           repository: ${{github.event.pull_request.head.repo.full_name}}
 
-      - name: Checkout actions
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            .github/actions
-          path: actions
+      # - name: Checkout actions
+      #   uses: actions/checkout@v4
+      #   with:
+      #     sparse-checkout: |
+      #       .github/actions
+      #     path: actions
 
       - name: Install ASDF toolset
         uses: launchbynttdata/actions-asdf-install_tools@v0
       
       - name: Set magic chart version
-        uses: ./actions/.github/actions/helm_test_magic_version
+        uses: launchbynttdata/actions-helm-inject_chart_version@v0
         with:
           test_path: ./tests/test-chart
 
       - name: Run test jobs
-        uses: ./actions/.github/actions/helm_test
+        uses: launchbynttdata/actions-helm-test@v0
         with:
           value_file: ${{ matrix.values_file }}
           test_path: ./tests/test-chart
@@ -101,12 +101,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Checkout actions
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            .github/actions
-          path: actions
+      # - name: Checkout actions
+      #   uses: actions/checkout@v4
+      #   with:
+      #     sparse-checkout: |
+      #       .github/actions
+      #     path: actions
   
       - name: Install ASDF toolset
         uses: launchbynttdata/actions-asdf-install_tools@v0
@@ -118,21 +118,6 @@ jobs:
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-
-      # - name: Import GPG key
-      #   env:
-      #     SIGNING_KEY_BASE64: ${{ secrets.GPG_PRIVATE_KEY }}
-      #     SIGNING_KEY_PASSPHRASE_BASE64: ${{ secrets.GPG_PASSPHRASE }}
-      #     KEY_PATH: ".gpg-dir"
-      #     SIGNING_KEY_PATH: ".gnupg/secring.gpg"
-      #     SIGNING_KEY_PASSPHRASE_PATH: ".gnupg/passphrase"
-      #     PUBLIC_KEY_PATH: ".gnupg/pubring.gpg"
-      #   run: |
-      #     mkdir "$KEY_PATH"
-      #     base64 -d <<< "$SIGNING_KEY_BASE64" > "$SIGNING_KEY_PATH"
-      #     base64 -d <<< "$SIGNING_KEY_PASSPHRASE_BASE64" > "$SIGNING_KEY_PASSPHRASE_PATH"
-      #     echo "CR_PASSPHRASE_FILE=$SIGNING_KEY_PASSPHRASE_PATH" >> "$GITHUB_ENV"
-      #     echo "CR_KEYRING=$SIGNING_KEY_PATH" >> "$GITHUB_ENV"
 
       - name: determine version
         id: find_version

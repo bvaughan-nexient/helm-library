@@ -14,52 +14,52 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - name: Install Helm Chart dependencies
-    working-directory: ${{ inputs.test_path }}
-    shell: bash
-    run: |
-      resolve-helm-chart-dependencies () {
-        if [ -z $1 ]; then
-          echo "No chart directory provided. Using current directory."
-          startdir=$(pwd)
-        else
-          startdir=$1
-        fi
-        pushd $startdir
-        if [ -f ./Chart.yaml ]; then
-          readarray found_deps < <(yq e -o=j -I=0 ".dependencies" ./Chart.yaml)
-          if [[ ${found_deps[@]} =~ "null" ]]; then
-            echo "No dependencies found in $startdir/Chart.yaml"
-          else
-            echo "Resolving dependencies for $startdir"
-            for dep in "${found_deps[@]}"; do
-              echo "Found dependency: $dep"
-              name=$(echo $dep | yq e ".[].name" -)
-              url=$(echo $dep | yq e ".[].repository" -)
-              if [[ $url =~ ^"http" ]]; then
-                echo "Adding helm repo $name from $url"
-                helm repo add $name $url
-              else
-                echo "Not adding repo for local path: $url"
-              fi
-            done
-            echo "Finished adding dependency repos."
-            helm dep build .
-            for chartzip in `find charts -maxdepth 1 -name '*.tgz' -type f`; do
-              echo "untar $chartzip:"
-              tar xfz $chartzip -C charts &>/dev/null
-              charttarlist=$(tar -tzf $chartzip)
-              chartzipdir=$(echo $charttarlist | head -n 1 | cut -f 1 -d "/")
-              echo; echo; echo "Resolving dependencies for $chartzipdir"; echo; echo; echo
-              resolve-helm-chart-dependencies charts/$chartzipdir
-            done
-          fi
-        else
-          echo "No Chart.yaml found in $startdir"
-        fi
-        popd
-      }  
-      resolve-helm-chart-dependencies .
+  # - name: Install Helm Chart dependencies
+  #   working-directory: ${{ inputs.test_path }}
+  #   shell: bash
+  #   run: |
+  #     resolve-helm-chart-dependencies () {
+  #       if [ -z $1 ]; then
+  #         echo "No chart directory provided. Using current directory."
+  #         startdir=$(pwd)
+  #       else
+  #         startdir=$1
+  #       fi
+  #       pushd $startdir
+  #       if [ -f ./Chart.yaml ]; then
+  #         readarray found_deps < <(yq e -o=j -I=0 ".dependencies" ./Chart.yaml)
+  #         if [[ ${found_deps[@]} =~ "null" ]]; then
+  #           echo "No dependencies found in $startdir/Chart.yaml"
+  #         else
+  #           echo "Resolving dependencies for $startdir"
+  #           for dep in "${found_deps[@]}"; do
+  #             echo "Found dependency: $dep"
+  #             name=$(echo $dep | yq e ".[].name" -)
+  #             url=$(echo $dep | yq e ".[].repository" -)
+  #             if [[ $url =~ ^"http" ]]; then
+  #               echo "Adding helm repo $name from $url"
+  #               helm repo add $name $url
+  #             else
+  #               echo "Not adding repo for local path: $url"
+  #             fi
+  #           done
+  #           echo "Finished adding dependency repos."
+  #           helm dep build .
+  #           for chartzip in `find charts -maxdepth 1 -name '*.tgz' -type f`; do
+  #             echo "untar $chartzip:"
+  #             tar xfz $chartzip -C charts &>/dev/null
+  #             charttarlist=$(tar -tzf $chartzip)
+  #             chartzipdir=$(echo $charttarlist | head -n 1 | cut -f 1 -d "/")
+  #             echo; echo; echo "Resolving dependencies for $chartzipdir"; echo; echo; echo
+  #             resolve-helm-chart-dependencies charts/$chartzipdir
+  #           done
+  #         fi
+  #       else
+  #         echo "No Chart.yaml found in $startdir"
+  #       fi
+  #       popd
+  #     }  
+  #     resolve-helm-chart-dependencies .
 
 
   - name: Lint Helm Chart
