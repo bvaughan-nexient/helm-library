@@ -80,7 +80,7 @@ jobs:
           test_path: ./tests/test-chart
 
       - name: Run test jobs
-        uses: launchbynttdata/actions-helm-test@v0
+        uses: launchbynttdata/actions-helm-test@1b603628afb21ec4ebdc1d89c62bea8ad3babaf3
         with:
           value_file: ${{ matrix.values_file }}
           test_path: ./tests/test-chart
